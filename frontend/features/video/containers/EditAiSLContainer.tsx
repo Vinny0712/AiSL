@@ -7,34 +7,62 @@ import toast from "react-hot-toast";
 
 interface EditAiSLContainerProps {
   uploadedVideo: File | null;
-  setGeneratedVideo: React.Dispatch<React.SetStateAction<File | null>>;
+  setGeneratedVideo: React.Dispatch<React.SetStateAction<Blob | null>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  generatedCaptions: string;
+  setGeneratedCaptions: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const EditAiSLContainer = (props: EditAiSLContainerProps) => {
-  const { uploadedVideo, setGeneratedVideo, setIsLoading } = props;
+  const {
+    uploadedVideo,
+    setGeneratedVideo,
+    setIsLoading,
+    generatedCaptions,
+    setGeneratedCaptions,
+  } = props;
 
   const router = useRouter();
   const fetch = customFetch();
-
-  const [generatedCaptions, setGeneratedCaptions] = useState("");
 
   const [isSignToSpeechFeatureSelected, setIsSignToSpeechFeatureSelected] =
     useState(false);
   const [isSignToEmojiFeatureSelected, setIsSignToEmojiFeatureSelected] =
     useState(false);
 
-  const handleOnConfirmAiSLGeneration = () => {
+  const handleOnConfirmAiSLGeneration = async () => {
     if (!uploadedVideo) return toast.error("Please upload a video!");
 
     setIsLoading(true);
 
-    // TODO: Connect to backend
-    // fetch.post("/generate", {}, "form")
+    // Call the API to generate the edited video
+    const features = {
+      sign_to_speech: {
+        selected: isSignToSpeechFeatureSelected,
+      },
+      sign_to_emoji: {
+        selected: isSignToEmojiFeatureSelected,
+      },
+    };
+    const formData = new FormData();
+    formData.append("file", uploadedVideo);
+    formData.append("captions", generatedCaptions);
+    formData.append("features", JSON.stringify(features));
 
-    setGeneratedVideo(uploadedVideo); // TODO: Set edited video with the actual edited video
+    try {
+      const generatedVideoBlob = await fetch.generate_video(formData, "form");
+      setGeneratedVideo(generatedVideoBlob);
+
+      console.log("Video generated successfully:", generatedVideoBlob);
+      toast.success("Video generated!");
+    } catch (error) {
+      console.error("Error generating video:", error);
+      toast.error("Failed to generate video!");
+
+      setGeneratedVideo(null);
+    }
+
     setIsLoading(false);
-    toast.success("Video Generated!");
   };
 
   return (

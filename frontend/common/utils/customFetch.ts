@@ -78,6 +78,22 @@ const customFetch = () => {
     return handleResponse(response);
   };
 
+  const generate_video = async (body: any, bodyType: "form") => {
+    const requestOptions: RequestInit = {
+      method: "POST",
+      credentials: "include",
+      body: body as FormData,
+    };
+    const response = await fetch(serverDomainUrl + "/generate", requestOptions);
+    if (response.ok) {
+      const generatedVideoBlob = await response.blob();
+      return generatedVideoBlob;
+    }
+
+    // Status not ok
+    return Promise.reject(response.status);
+  };
+
   const retrieve_image = async (file_path: string) => {
     const requestOptions: RequestInit = {
       method: "POST",
@@ -97,7 +113,15 @@ const customFetch = () => {
     return Promise.reject(response.status);
   };
 
-  return { get, post, put, _delete, _delete_with_req_body, retrieve_image };
+  return {
+    get,
+    post,
+    put,
+    _delete,
+    _delete_with_req_body,
+    generate_video,
+    retrieve_image,
+  };
 };
 
 export default customFetch;

@@ -4,15 +4,22 @@ import customFetch from "@common/utils/customFetch";
 import React, { useState, useRef } from "react";
 import toast from "react-hot-toast";
 import { MdCloudUpload } from "react-icons/md";
+import { VideoUploadResponseSchema } from "../schemas";
 
 interface VideoInputProps {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   uploadedVideo: File | null;
   setUploadedVideo: React.Dispatch<React.SetStateAction<File | null>>;
+  setGeneratedCaptions: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const VideoInput = (props: VideoInputProps) => {
-  const { setIsLoading, uploadedVideo, setUploadedVideo } = props;
+  const {
+    setIsLoading,
+    uploadedVideo,
+    setUploadedVideo,
+    setGeneratedCaptions,
+  } = props;
 
   const fetch = customFetch();
   const acceptedfileTypes = ["video/mp4", "video/mpeg"];
@@ -41,9 +48,15 @@ export const VideoInput = (props: VideoInputProps) => {
     formData.append("file", selectedFile);
 
     try {
-      // TODO: Link to Backend
-      // const response = await fetch.post("/upload", formData, "form");
-      // console.log("File uploaded successfully:", response);
+      const response: VideoUploadResponseSchema = await fetch.post(
+        "/upload",
+        formData,
+        "form"
+      );
+      setGeneratedCaptions(response.captions);
+      setErrorMessage("");
+
+      console.log("File uploaded successfully:", response);
       toast.success("Video uploaded successfully!");
 
       setUploadedVideo(selectedFile);

@@ -7,7 +7,7 @@ import useDownloader from "react-use-downloader";
 
 interface GeneratedVideoContainerProps {
   originalVideo: File;
-  generatedVideo: File;
+  generatedVideo: Blob;
 }
 
 export const GeneratedVideoContainer = (
