@@ -25,15 +25,25 @@ const customFetch = () => {
     return handleResponse(response);
   };
 
-  const post = async (url: string, body: any) => {
-    const requestOptions: RequestInit = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(body),
-    };
-    const response = await fetch(serverDomainUrl + url, requestOptions);
-    return handleResponse(response);
+  const post = async (url: string, body: any, bodyType: "json" | "form") => {
+    if (bodyType === "json") {
+      const requestOptions: RequestInit = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(body),
+      };
+      const response = await fetch(serverDomainUrl + url, requestOptions);
+      return handleResponse(response);
+    } else if (bodyType === "form") {
+      const requestOptions: RequestInit = {
+        method: "POST",
+        credentials: "include",
+        body: body as FormData,
+      };
+      const response = await fetch(serverDomainUrl + url, requestOptions);
+      return handleResponse(response);
+    }
   };
 
   const put = async (url: string, body: any) => {

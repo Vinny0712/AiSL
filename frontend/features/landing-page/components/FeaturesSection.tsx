@@ -1,5 +1,6 @@
 import { Button } from "@common/components";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export const FeaturesSection = () => {
@@ -66,7 +67,7 @@ export const FeaturesSection = () => {
       </div>
 
       <Button variant="outline" className="!w-full mt-12">
-        Try Now
+        <Link href="/upload">Try Now</Link>
       </Button>
     </div>
   );
