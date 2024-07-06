@@ -1,7 +1,9 @@
+import { LandingPageContainer } from "@features/landing-page/containers";
+
 export default function Home() {
   return (
     <main>
-      <div>Home</div>
+      <LandingPageContainer />
     </main>
   );
 }

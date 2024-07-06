@@ -1,6 +1,6 @@
 "use client";
 
-import { roboto } from "@common/styles/fonts";
+import { metrophobic } from "@common/styles/fonts";
 import React from "react";
 import { Toaster } from "react-hot-toast";
 import { Navbar } from "./Navbar";
@@ -13,7 +13,7 @@ export const AppLayout = (props: AppLayoutProps) => {
   const { children } = props;
 
   return (
-    <body className={"flex flex-col " + roboto.className}>
+    <body className={"flex flex-col " + metrophobic.className}>
       <Toaster />
 
       <Navbar />
