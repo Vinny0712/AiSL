@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "@common/styles/globals.css";
-import { roboto } from "@common/styles/fonts";
+import { AppLayout } from "@features/layout/containers";
 
 export const metadata: Metadata = {
   title: "TikTok AiSL",
@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <AppLayout>{children}</AppLayout>
     </html>
   );
 }
