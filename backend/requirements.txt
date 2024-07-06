@@ -1,2 +1,3 @@
 fastapi
 pydantic
+python-multipart
