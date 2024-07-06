@@ -54,15 +54,15 @@ const HeroDescriptionCTA = () => {
   return (
     <div className="flex flex-col gap-6 mt-4">
       <div className="text-[18px] sm:text-[20px]">
-        Create and understand accessible and inclusive sign language content
-        easily with&nbsp;
+        Create and understand accessible and inclusive content with sign
+        language easily with&nbsp;
         <Link
           href="/"
           className="font-bold text-tiktok-red underline underline-offset-2 cursor-pointer"
         >
           AiSL&apos;s AI-powered
         </Link>
-        &nbsp;generation.
+        &nbsp;generation. Inspiring creativity and joy for all!
       </div>
 
       <Button className="w-max">

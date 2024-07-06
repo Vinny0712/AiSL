@@ -52,7 +52,7 @@ export const Button = (props: ButtonProps) => {
   return (
     <button
       type={type}
-      className={`flex flex-row items-center gap-2 rounded ${variantStyle} ${sizeStyle} ${className}`}
+      className={`flex flex-row justify-center items-center gap-2 rounded ${variantStyle} ${sizeStyle} ${className}`}
       {...htmlButtonProps}
     >
       {children}

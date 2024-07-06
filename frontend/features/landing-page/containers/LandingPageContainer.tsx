@@ -1,10 +1,14 @@
 import React from "react";
-import { Hero } from "../components/Hero";
+import { Hero, CommitmentSection, FeaturesSection } from "../components";
 
 export const LandingPageContainer = () => {
   return (
-    <div>
-      <Hero />
+    <div className="flex justify-center">
+      <div className="max-w-[1500px]">
+        <Hero />
+        <CommitmentSection />
+        <FeaturesSection />
+      </div>
     </div>
   );
 };
