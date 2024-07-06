@@ -75,11 +75,11 @@ const HeroDescriptionCTA = () => {
 const HeroImage = () => {
   return (
     <Image
-      src="/logo512.png"
+      src="/app-logo.png"
       alt="hero image"
-      width={362}
-      height={394}
-      className="-translate-y-12 hidden lg:block"
+      width={450}
+      height={450}
+      className="hidden lg:block"
     />
   );
 };
