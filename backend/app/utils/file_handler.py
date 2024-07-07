@@ -7,6 +7,7 @@ upload_directory = os.path.join(os.getcwd(), "uploads")
 generated_directory = os.path.join(os.getcwd(), "generated-files")
 generated_audio_directory = os.path.join(generated_directory, "audio")
 generated_video_directory = os.path.join(generated_directory, "video")
+demo_directory = os.path.join(os.getcwd(), "demo")
 
 def save_file_to_local(video: UploadFile) -> str:
     """

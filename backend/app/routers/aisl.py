@@ -43,3 +43,7 @@ async def generate_video(file: UploadFile, captions: Annotated[str, Form()], fea
         captions=captions,
         features=features
     )
+
+@router.get("/get_demo_video_input", tags=["AiSL"], response_model=UploadVideoResponseSchema)
+async def get_demo_video_input() -> FileResponse:
+    return await AISLController.get_demo_input_video()

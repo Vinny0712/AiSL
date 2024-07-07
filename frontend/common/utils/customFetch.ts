@@ -94,6 +94,21 @@ const customFetch = () => {
     return Promise.reject(response.status);
   };
 
+  const retrieve_video = async (url: string) => {
+    const requestOptions: RequestInit = {
+      method: "GET",
+      credentials: "include",
+    };
+    const response = await fetch(serverDomainUrl + url, requestOptions);
+    if (response.ok) {
+      const generatedVideoBlob = await response.blob();
+      return generatedVideoBlob;
+    }
+
+    // Status not ok
+    return Promise.reject(response.status);
+  };
+
   const retrieve_image = async (file_path: string) => {
     const requestOptions: RequestInit = {
       method: "POST",
@@ -120,6 +135,7 @@ const customFetch = () => {
     _delete,
     _delete_with_req_body,
     generate_video,
+    retrieve_video,
     retrieve_image,
   };
 };
