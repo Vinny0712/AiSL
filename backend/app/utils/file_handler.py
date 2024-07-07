@@ -43,3 +43,13 @@ def save_audio_to_local(gttsObject: gTTS, file_name: str):
 def retrieve_full_file_path_from_local(relative_file_path: str):
     file_path = os.path.join(upload_directory, relative_file_path)
     return file_path
+
+def generate_captioned_video_filepath(full_file_path):
+    # Create upload directory if it does not exist
+    if not os.path.exists(generated_video_directory):
+        os.makedirs(generated_video_directory)
+    file_name=full_file_path.split('/')[-1] 
+    # Destination File Path
+    file_path = os.path.join(generated_video_directory, file_name)
+
+    return file_path

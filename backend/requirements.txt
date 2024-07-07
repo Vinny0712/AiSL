@@ -13,3 +13,5 @@ pandas
 langchain-google-genai
 pillow
 gtts
+mediapipe-model-maker
+mediapipe
