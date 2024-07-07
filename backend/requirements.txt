@@ -12,3 +12,4 @@ ctransformers
 pandas
 langchain-google-genai
 pillow
+gtts

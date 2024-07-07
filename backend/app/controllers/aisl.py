@@ -16,17 +16,19 @@ class AISLController:
     captions: str,
     features: RequestFeaturesSchmea
   ) -> FileResponse: 
-    speech_audio, emoji_captions = None, None
+    speech_audio_file_path, emoji_captions = None, None
 
     # Text to Speech Feature
     if features.sign_to_speech:
-      speech_audio = await aisl_services.generate_text_to_speech(captions=captions)
-      if not speech_audio:
+      speech_audio_file_path = await aisl_services.generate_text_to_speech(captions=captions)
+      print(speech_audio_file_path)
+      if not speech_audio_file_path:
         raise HTTPException(500, "Failed to generate speech from captions!")
   
     # Text to Emoji Feature
     if features.sign_to_emoji:
       emoji_captions = await aisl_services.generate_text_to_emoji(captions=captions)
+      print(emoji_captions)
       if not emoji_captions:
         raise HTTPException(500, "Failed to generate emojis from captions!")
       captions = emoji_captions # Overwrite the original captions with the emoji version
@@ -35,7 +37,7 @@ class AISLController:
     edited_video_file_path = await aisl_services.generate_final_video(
       video=file,
       captions=captions,
-      speech_audio=speech_audio
+      speech_audio_file_path=speech_audio_file_path
     )
     if not edited_video_file_path:
       raise HTTPException(500, "Failed to generate video!")

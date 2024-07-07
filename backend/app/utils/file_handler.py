@@ -1,8 +1,12 @@
 from fastapi import UploadFile
 import os
 import shutil
+from gtts import gTTS # For text to speech conversion
 
 upload_directory = os.path.join(os.getcwd(), "uploads")
+generated_directory = os.path.join(os.getcwd(), "generated-files")
+generated_audio_directory = os.path.join(generated_directory, "audio")
+generated_video_directory = os.path.join(generated_directory, "video")
 
 def save_file_to_local(video: UploadFile) -> str:
     """
@@ -22,6 +26,18 @@ def save_file_to_local(video: UploadFile) -> str:
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(video.file, buffer)
 
+    return file_path
+
+def save_audio_to_local(gttsObject: gTTS, file_name: str):
+    # Create upload directory if it does not exist
+    if not os.path.exists(generated_audio_directory):
+        os.makedirs(generated_audio_directory)
+
+    # Destination File Path
+    file_path = os.path.join(generated_audio_directory, file_name)
+
+    # Save
+    gttsObject.save(file_path)
     return file_path
 
 def retrieve_full_file_path_from_local(relative_file_path: str):

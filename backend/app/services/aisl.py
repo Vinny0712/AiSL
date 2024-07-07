@@ -1,7 +1,9 @@
 from fastapi import UploadFile
-from utils.file_handler import save_file_to_local, retrieve_full_file_path_from_local
+from utils.file_handler import save_file_to_local, retrieve_full_file_path_from_local, save_audio_to_local
 from langchain_google_genai import ChatGoogleGenerativeAI
 from rag.vector_db import VectorDB
+from gtts import gTTS # For text to speech conversion
+import uuid
 
 async def generate_sign_language_to_text(video: UploadFile) -> str:
     full_file_path = save_file_to_local(video=video)
@@ -9,12 +11,19 @@ async def generate_sign_language_to_text(video: UploadFile) -> str:
     # TODO: Sign Language to Text
     return "Sign Language to Text"
 
-async def generate_text_to_speech(captions: str):
+async def generate_text_to_speech(captions: str) -> str:
     """
-    Returns an Audio File.
+    Returns the full file path to the audio file.
     """
-    # TODO: Text to Speech
-    return "Text to Speech"
+    # Passing the text and language to the engine, here we have marked slow=False. Which tells 
+    # the module that the converted audio should have a high speed
+    gTTsObject = gTTS(text=captions, lang='en', slow=False)
+
+    # Saving the converted audio in a mp3 file named
+    file_name = str(uuid.uuid4())
+    file_path = save_audio_to_local(gTTsObject, f"{file_name}.mp3")
+
+    return file_path
 
 async def generate_text_to_emoji(captions: str) -> str:
     """
@@ -54,13 +63,17 @@ async def generate_text_to_emoji(captions: str) -> str:
 
     llm = ChatGoogleGenerativeAI(model="gemini-pro")
     result = llm.invoke(_get_formatted_input(messages, context))
-    print(result.content)
 
     return result.content
 
-async def generate_final_video(video: UploadFile, captions: str, speech_audio: bytes | None):
+async def generate_final_video(video: UploadFile, captions: str, speech_audio_file_path: str):
     """
     Generates an edited video based on the input `captions` and `speech_audio`.
+
+    Arguments:
+        video: UploadFile
+        captions: str
+        speech_audio_file_path: str (Absolute file path)
 
     Returns:
         Generated video file path in `string` format.
@@ -69,7 +82,7 @@ async def generate_final_video(video: UploadFile, captions: str, speech_audio: b
     
     # TODO: Edit the Video
 
-    if speech_audio:
+    if speech_audio_file_path:
         # TODO: Add Audio to video
         pass
 
