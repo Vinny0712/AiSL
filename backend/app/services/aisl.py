@@ -5,14 +5,20 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from rag.vector_db import VectorDB
 from gtts import gTTS # For text to speech conversion
 import uuid
-import mediapipe as mp
 import cv2
 import datetime
-from mediapipe.tasks import python
-from mediapipe.tasks.python import vision
 import json
+from fastapi import HTTPException
+
 
 async def generate_sign_language_to_text(video: UploadFile) -> str:
+    try:
+        import mediapipe as mp
+        from mediapipe.tasks import python
+        from mediapipe.tasks.python import vision
+    except:
+        print("Failed to import mediapipe")
+        raise HTTPException(500, "Server error. Please try again later. Please use the demo video input if you would like to AiSL in action.")
     full_file_path = save_file_to_local(video=video)
 
     #set up model
@@ -53,13 +59,12 @@ async def generate_sign_language_to_text(video: UploadFile) -> str:
     cap.release()
 
     
-    #format captions
+    # format captions
     processed_captions = process_timestamps(captions)
     processed_cleaned_captions = clean_repeated_words(processed_captions)
     processed_cleaned_captions_json = json.dumps(processed_cleaned_captions)
     print("formatted_captions",processed_cleaned_captions_json)
-
-    # TODO: Sign Language to Text
+    
     return str(processed_cleaned_captions_json)
 
 async def generate_text_to_speech(captions: str) -> str:
@@ -129,8 +134,7 @@ async def generate_final_video(video: UploadFile, captions: str, speech_audio_fi
     Returns:
         Generated video file path in `string` format.
     """
-    # TODO: Edit the Video
-    
+    # Edit the Video
     full_file_path = save_file_to_local(video=video)
     video_path = full_file_path
     output_path = generate_captioned_video_filepath(full_file_path)
@@ -179,9 +183,7 @@ async def generate_final_video(video: UploadFile, captions: str, speech_audio_fi
         # TODO: Add Audio to video
         pass
 
-    # TODO: Save Generated Video to local
-
-    # TODO: Return generated video file path
-    generated_video_file_path = full_file_path
+    # Return generated video file path
+    generated_video_file_path = output_path
 
     return retrieve_full_file_path_from_local(generated_video_file_path)
