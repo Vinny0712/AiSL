@@ -1,3 +1,14 @@
 fastapi
 pydantic
 python-multipart
+langchain
+langchain-core
+langchain-community
+langchain-huggingface
+transformers
+sentence-transformers
+faiss-cpu
+ctransformers
+pandas
+langchain-google-genai
+pillow
