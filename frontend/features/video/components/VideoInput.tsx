@@ -78,7 +78,6 @@ export const VideoInput = (props: VideoInputProps) => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    console.log("here");
 
     const demoVideoBlob = await fetch.retrieve_video("/get_demo_video_input");
     const demoVideoObjectUrl = URL.createObjectURL(demoVideoBlob);

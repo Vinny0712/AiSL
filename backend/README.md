@@ -13,7 +13,19 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-1. In the `/app` directory, start the application.
+3. Set up Environment Variables
+
+Create a `.env` file in the `backend/` directory with all the environment variables listed in the `.env.example`.
+
+```env
+# .env file with all your environment variables
+
+HUGGINGFACE_TOKEN=
+GOOGLE_API_KEY=
+PRODUCTION_CLIENT_URL=
+```
+
+4. In the `/app` directory, start the application.
 
 ```bash
 cd app
@@ -38,7 +50,7 @@ uvicorn main:app --reload
 In the root directory:
 
 ```bash
-docker build -t aisl/backend:1.0.0 .
+docker build -t tohjingqiang/aisl-backend:1.0.0 .
 ```
 
 **2. Login into Docker Hub**
@@ -50,7 +62,7 @@ docker login
 **3. Push Image to Docker Hub**
 
 ```bash
-docker push aisl/backend:1.0.0
+docker push tohjingqiang/aisl-backend:1.0.0
 ```
 
 **4. Reload Repository Page on DockerHub**

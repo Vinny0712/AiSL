@@ -55,7 +55,7 @@ Introducing **`AiSL`**, an AI-powered tool that turns videos with sign language 
 Here is a quick demo of the app. We hope you enjoy it.
 
 - [Website Demo Link](https://aisl.vercel.app/)
-- [YouTube Demo Link]()
+- [YouTube Demo Link](https://youtu.be/MUct7lXxaS0?si=lvGYyf9wBUW5sHkh)
 
 Liked it? Please give a ⭐️ to **AiSL**.
 
@@ -157,6 +157,7 @@ Create a `.env` file in the `backend/` directory with all the environment variab
 
 HUGGINGFACE_TOKEN=
 GOOGLE_API_KEY=
+PRODUCTION_CLIENT_URL=
 ```
 
 4. In the `/app` directory, start the application.
