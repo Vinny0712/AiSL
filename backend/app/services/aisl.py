@@ -121,8 +121,8 @@ async def generate_text_to_speech(captions: str) -> str:
         if text:
             #add audio of text for this timestamp range    
             tts = gTTS(text)
-            tts.save("generated-files/audio/temp.mp3")
-            word_audio = AudioSegment.from_file("generated-files/audio/temp.mp3")
+            tts.save("temp.mp3")
+            word_audio = AudioSegment.from_file("temp.mp3")
             final_audio += word_audio
         else:
             silence=AudioSegment.silent(duration=1000) #in ms
