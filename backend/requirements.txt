@@ -15,5 +15,8 @@ langchain-google-genai
 pillow
 gtts
 opencv-python
+moviepy
+pydub
+librosa
 # mediapipe-model-maker
-# mediapipe
+mediapipe
