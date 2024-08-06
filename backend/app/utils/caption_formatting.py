@@ -1,18 +1,24 @@
 
 import datetime
+from collections import Counter
 
 def process_timestamps(input_dict):
     # Step 1: Remove milliseconds from the keys and concatenate words
     processed_dict = {}
     for timestamp, word in input_dict.items():
         # Parse the timestamp and remove milliseconds
-        time_obj = datetime.datetime.strptime(timestamp, '%H:%M:%S.%f')
+        print(timestamp)
+        try:
+            
+            time_obj = datetime.datetime.strptime(timestamp, '%H:%M:%S.%f')
+        except ValueError:
+            time_obj = datetime.datetime.strptime(timestamp, '%H:%M:%S')
         time_str = time_obj.strftime('%H:%M:%S')
         
         # Concatenate the words with a space if they are different
         if time_str in processed_dict:
-            if word not in processed_dict[time_str].split():  # Avoid duplicate words
-                processed_dict[time_str] += ' ' + word
+            
+            processed_dict[time_str] += ' ' + word
         else:
             processed_dict[time_str] = word
 
@@ -26,6 +32,13 @@ def clean_repeated_words(input_dict):
     
     for key in sorted_keys:
         words = input_dict[key].split()
+        #only keep the word with max occurances in that timestamp
+        word_counts = Counter(words)
+        
+        # Find the most common word
+        most_common_word, frequency = word_counts.most_common(1)[0]
+        words=[most_common_word]
+
         
         # Check if the first word is the same as the last word of the previous entry
         if prev_word and words[0] == prev_word:

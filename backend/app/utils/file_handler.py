@@ -2,6 +2,7 @@ from fastapi import UploadFile
 import os
 import shutil
 from gtts import gTTS # For text to speech conversion
+from pydub import AudioSegment
 
 upload_directory = os.path.join(os.getcwd(), "uploads")
 generated_directory = os.path.join(os.getcwd(), "generated-files")
@@ -29,7 +30,7 @@ def save_file_to_local(video: UploadFile) -> str:
 
     return file_path
 
-def save_audio_to_local(gttsObject: gTTS, file_name: str):
+def save_audio_to_local(final_audio: AudioSegment, file_name: str):
     # Create upload directory if it does not exist
     if not os.path.exists(generated_audio_directory):
         os.makedirs(generated_audio_directory)
@@ -38,7 +39,8 @@ def save_audio_to_local(gttsObject: gTTS, file_name: str):
     file_path = os.path.join(generated_audio_directory, file_name)
 
     # Save
-    gttsObject.save(file_path)
+    final_audio.export(file_path, format="mp3")
+    
     return file_path
 
 def retrieve_full_file_path_from_local(relative_file_path: str):
@@ -49,7 +51,8 @@ def generate_captioned_video_filepath(full_file_path):
     # Create upload directory if it does not exist
     if not os.path.exists(generated_video_directory):
         os.makedirs(generated_video_directory)
-    file_name=full_file_path.split('/')[-1] 
+    file_name=full_file_path.split('/')[-1]
+    
     # Destination File Path
     file_path = os.path.join(generated_video_directory, file_name)
 
