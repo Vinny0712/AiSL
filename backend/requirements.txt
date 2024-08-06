@@ -1,4 +1,5 @@
 fastapi
+uvicorn[standard]
 pydantic
 python-multipart
 langchain
