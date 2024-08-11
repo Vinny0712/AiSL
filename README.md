@@ -7,7 +7,7 @@
 <h4 align="center">
   <b>Sign Language Accessibility for TikTok Creators and Audience</b>
   <br /><br />
-  <a href="https://tiktoktechjam2024.devpost.com/">2024 TikTok TechJam</a>
+  <a href="https://devpost.com/software/aisl-ai-powered-sign-language-accessibility">2024 TikTok TechJam</a>
 </h4>
 
 <p align="center">
