@@ -135,14 +135,14 @@ And you are ready to start using the frontend! The web application is running on
 
 ### Backend Setup Instructions
 
-1. In the `backend/` directory, create a python virtual environment and activate it.
+1. In the `backend/` directory, create a python virtual environment and activate it. Use python >=3.9
 
 ```bash
 python -m venv .venv
 . .venv\Scripts\activate # The .venv activation command might differ depending on your operating system
 ```
 
-2. Install the required packages.
+2. Install the required packages. Also install ffmpeg and add to PATH following this guide : https://www.wikihow.com/Install-FFmpeg-on-Windows
 
 ```bash
 pip install -r requirements.txt

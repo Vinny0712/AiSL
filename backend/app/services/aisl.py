@@ -172,10 +172,11 @@ async def generate_text_to_emoji(captions: str) -> str:
 
         @docs: https://huggingface.co/nvidia/Llama3-ChatQA-1.5-70B
     """
+    
     # RAG
     db = VectorDB()
     documents = db.query(captions)
-
+    
     # Context
     context = ""
 
@@ -186,8 +187,11 @@ async def generate_text_to_emoji(captions: str) -> str:
         {"role": "user", "content": captions}
     ]
     system="System: You are a fun emoji translator that translates words in sentences to emojis where appropriate.The assistant gives a sentence that contains both emoji and words to the user's input based on the context and your understanding of emojis, making a one-to-one substitution of a word or phrase of words.You may use emojis not in the provided context. If no words can be translated to emojis, return the original sentence.Follow the same json structure provided.Strictly do not modify the timestamps"
+    
     llm = ChatGoogleGenerativeAI(model="gemini-pro")
+    
     result = llm.invoke(_get_formatted_input(messages, context,system))
+    
 
     return result.content
 
@@ -208,7 +212,13 @@ async def generate_final_video(video: UploadFile, captions: str, speech_audio_fi
     full_file_path = save_file_to_local(video=video)
     video_path = full_file_path
     output_path = generate_captioned_video_filepath(full_file_path)
-    cap = cv2.VideoCapture(video_path)
+    #correct the encoding 
+    temp_path=output_path.split(".")[0]+'-tmp'+'.mp4'
+    command=f"ffmpeg -i {video_path} -c:v libx264 -c:a aac {temp_path}"
+    
+    os.system(command)
+
+    cap = cv2.VideoCapture(temp_path)
 
     # Get the frame rate and frame size of the video
     fps = cap.get(cv2.CAP_PROP_FPS)
@@ -221,9 +231,11 @@ async def generate_final_video(video: UploadFile, captions: str, speech_audio_fi
     frame_count=0
     while cap.isOpened():
         ret, frame = cap.read()
-        if not ret:
-            break
         frame_count+=1
+        if not ret:
+            print(f"Error reading frame at frame {frame_count}")
+            break
+        
         current_time = frame_count / fps
         timestamp_str = '0'+str(datetime.timedelta(seconds=int(current_time)))
         
@@ -268,19 +280,19 @@ async def generate_final_video(video: UploadFile, captions: str, speech_audio_fi
     
     os.system(command)
     print(f"completed writing to {new_file_name}")
-
+    with_audio_file_name=""
     if speech_audio_file_path:
-        # Add audio to the processed video
-        video = mp_editor.VideoFileClip(new_file_name)
-        audio = mp_editor.AudioFileClip(speech_audio_file_path)
-
-
-        # # Combine video with audio
-        final_video = video.set_audio(audio)
+        print(new_file_name)
+        print(speech_audio_file_path)
         with_audio_file_name=output_path.split(".")[0]+'-voice'+'.mp4'
-        final_video.write_videofile(with_audio_file_name, codec="libx264", audio_codec="mp3")
+        command=f"ffmpeg -i {new_file_name} -i {speech_audio_file_path} -vcodec libx264 -acodec aac -strict experimental {with_audio_file_name}"
+    
+        os.system(command)
+
+        print("completed writing")
+        
 
     # Return generated video file path
-    generated_video_file_path = new_file_name
+    generated_video_file_path = new_file_name if not speech_audio_file_path else with_audio_file_name
 
     return retrieve_full_file_path_from_local(generated_video_file_path)
